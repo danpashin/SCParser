@@ -30,15 +30,17 @@ static NSString * _Nullable const kSCParserCommonErrorDomain = @"ru.danpashin.sc
 - (void)parseAppProvisionWithCompletion:(void (^_Nonnull)(NSDictionary * _Nullable provisionDict, NSError * _Nullable error))completion
 {
     dispatch_async(self.parseQueue, ^{
-        NSString *provisionPath = [[NSBundle mainBundle] pathForResource:@"embedded" ofType:@"mobileprovision"];
-        if (!provisionPath) {
+        CFURLRef provisionURL = CFBundleCopyResourceURL(CFBundleGetMainBundle(), CFSTR("embedded"), CFSTR("mobileprovision"), NULL);
+        if (!provisionURL) {
             NSError *error = [NSError errorWithDomain:kSCParserCommonErrorDomain code:4 
                                              userInfo:@{NSLocalizedDescriptionKey: @"Cannot start parsing. Provision file does not exist."}];
             completion(nil, error);
             return;
         }
+        CFStringRef provisionPath = CFURLCopyFileSystemPath(provisionURL, kCFURLPOSIXPathStyle);
+        CFRelease(provisionURL);
         
-        [self parseSignedData:[NSData dataWithContentsOfFile:provisionPath] completion:completion];
+        [self parseSignedData:[NSData dataWithContentsOfFile:CFBridgingRelease(provisionPath)] completion:completion];
     });
 }
 
