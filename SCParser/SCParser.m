@@ -16,9 +16,11 @@ static NSString * _Nullable const kSCParserCommonErrorDomain = @"ru.danpashin.sc
 @end
 
 
+NS_ASSUME_NONNULL_BEGIN
+
 @implementation SCParser
 
-- (_Nonnull instancetype)init 
+- (instancetype)init 
 {
     self = [super init];
     if (self) {
@@ -27,13 +29,13 @@ static NSString * _Nullable const kSCParserCommonErrorDomain = @"ru.danpashin.sc
     return self;
 }
 
-- (void)parseAppProvisionWithCompletion:(void (^_Nonnull)(NSDictionary * _Nullable provisionDict, NSError * _Nullable error))completion
+- (void)parseAppProvisionWithCompletion:(SCParserCompletion)completion
 {
     dispatch_async(self.parseQueue, ^{
         CFURLRef provisionURL = CFBundleCopyResourceURL(CFBundleGetMainBundle(), CFSTR("embedded"), CFSTR("mobileprovision"), NULL);
         if (!provisionURL) {
-            NSError *error = [NSError errorWithDomain:kSCParserCommonErrorDomain code:4 
-                                             userInfo:@{NSLocalizedDescriptionKey: @"Cannot start parsing. Provision file does not exist."}];
+            NSError *error = [self localizedErrorWithCode:4 
+                                             description:@"Cannot start parsing. Provision file does not exist."];
             completion(nil, error);
             return;
         }
@@ -44,7 +46,7 @@ static NSString * _Nullable const kSCParserCommonErrorDomain = @"ru.danpashin.sc
     });
 }
 
-- (void)parseSignedData:(nullable NSData *)signedData completion:(void (^ _Nonnull)(NSDictionary * _Nullable plist, NSError * _Nullable error))completion
+- (void)parseSignedData:(NSData *)signedData completion:(SCParserCompletion)completion
 {
     dispatch_async(self.parseQueue, ^{
         CFStringRef signedString = CFStringCreateWithBytes(kCFAllocatorDefault, signedData.bytes, signedData.length, kCFStringEncodingISOLatin1, YES);
@@ -52,8 +54,8 @@ static NSString * _Nullable const kSCParserCommonErrorDomain = @"ru.danpashin.sc
             if (signedString)
                 CFRelease(signedString);
             
-            NSError *error = [NSError errorWithDomain:kSCParserCommonErrorDomain code:1 
-                                             userInfo:@{NSLocalizedDescriptionKey: @"Cannot start parsing. Data is nil or has inappropriate encoding."}];
+            NSError *error = [self localizedErrorWithCode:1 
+                                             description:@"Cannot complete parsing. Data is nil or has inappropriate encoding."];
             completion(nil, error);
             return;
         }
@@ -73,8 +75,8 @@ static NSString * _Nullable const kSCParserCommonErrorDomain = @"ru.danpashin.sc
         CFRelease(mutableDataString);
         
         if (!unsignedData) {
-            NSError *error = [NSError errorWithDomain:kSCParserCommonErrorDomain code:2 
-                                             userInfo:@{NSLocalizedDescriptionKey: @"Cannot complete parsing. Parsed data has inappropriate format."}];
+            NSError *error = [self localizedErrorWithCode:2 
+                                              description:@"Cannot complete parsing. Parsed data has inappropriate format."];
             completion(nil, error);
             return;
         }
@@ -86,11 +88,25 @@ static NSString * _Nullable const kSCParserCommonErrorDomain = @"ru.danpashin.sc
         if (!plistError && [plist isKindOfClass:[NSDictionary class]]) {
             completion(plist, nil);
         } else {
-            NSError *error = [NSError errorWithDomain:kSCParserCommonErrorDomain code:3 
-                                             userInfo:@{NSLocalizedDescriptionKey: @"Cannot complete parsing. Parsed data is not dictionary."}];
+            NSError *error = [self localizedErrorWithCode:3 
+                                             description:@"Cannot complete parsing. Parsed data is not a dictionary."];
             completion(nil, error);
         }
     });
 }
 
+- (NSError *)localizedErrorWithCode:(NSInteger)code description:(NSString *)description, ...
+{
+    va_list args;
+    va_start(args, description);
+    NSMutableString *localizedDescription = [[NSMutableString alloc] initWithFormat:NSLocalizedString(description, @"") arguments:args];
+    va_end(args);
+    [localizedDescription appendFormat:NSLocalizedString(@"\n(Error code %i)", @""), (int)code];
+    
+    return [NSError errorWithDomain:kSCParserCommonErrorDomain code:code 
+                        userInfo:@{NSLocalizedDescriptionKey:localizedDescription}];
+}
+
 @end
+
+NS_ASSUME_NONNULL_END

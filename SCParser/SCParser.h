@@ -8,18 +8,40 @@
 
 #import <Foundation/Foundation.h>
 
+/**
+ Блок, который вызывается после завершения парсинга.
+
+ @param plist Содержит словарь с обработанными данными. Если парсинг прошел неудачно, вернет nil.
+ @param error Вернет ошибку, если парсинг прошел неудачно.
+ */
+typedef void(^SCParserCompletion)(NSDictionary * _Nullable plist, NSError * _Nullable error);
+
+
+
+NS_ASSUME_NONNULL_BEGIN
+
 @interface SCParser : NSObject
 
-- (_Nonnull instancetype)init NS_DESIGNATED_INITIALIZER;
+/**
+ Выполняет парсинг встроенного в приложение профиля mobileprovision.
+ Таковой имеется только в самоподписанных приложениях.
+
+ @param completion Блок, который вызывается после завершения парсинга.
+ @see SCParserCompletion
+ */
+- (void)parseAppProvisionWithCompletion:(SCParserCompletion)completion;
+
 
 /**
- *  Выполняет парсинг embedded.mobilprovision, находящийся в главной директории приложения, и вызывает completion блок.
- */
-- (void)parseAppProvisionWithCompletion:(void (^_Nonnull)(NSDictionary * _Nullable provisionDict, NSError * _Nullable error))completion;
+ Выполняет парсинг данных, подписанных с помощью цифрового сертификата.
 
-/**
- *  Выполняет парсинг данных, подписанных с помощью CMS, и вызывает completion блок.
+ @param signedData Данные для парсинга.
+ 
+ @param completion Блок, который вызывается после завершения парсинга.
+ @see SCParserCompletion
  */
-- (void)parseSignedData:(nullable NSData *)signedData completion:(void (^ _Nonnull)(NSDictionary * _Nullable plist, NSError * _Nullable error))completion;
+- (void)parseSignedData:(NSData *)signedData completion:(SCParserCompletion)completion;
 
 @end
+
+NS_ASSUME_NONNULL_END
