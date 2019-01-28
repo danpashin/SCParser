@@ -9,16 +9,12 @@
 /* Begin PBXBuildFile section */
 		A518B7D4210F6D5A004D6EBB /* SCParser.h in Headers */ = {isa = PBXBuildFile; fileRef = A5AF19022098F3B400EF17FB /* SCParser.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A518B7D5210F6D5D004D6EBB /* SCParser.m in Sources */ = {isa = PBXBuildFile; fileRef = A5AF19032098F3B400EF17FB /* SCParser.m */; };
-		A518B7D8210F6D77004D6EBB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A518B7D7210F6D77004D6EBB /* Foundation.framework */; };
-		A518B7DA210F6D9C004D6EBB /* SCParser.m in Sources */ = {isa = PBXBuildFile; fileRef = A5AF19032098F3B400EF17FB /* SCParser.m */; };
 		A518B7DB210F6DB3004D6EBB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A518B7D7210F6D77004D6EBB /* Foundation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		A518B7BF210F6AA0004D6EBB /* SCParser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SCParser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A518B7CB210F6AD7004D6EBB /* libSCParser.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSCParser.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		A518B7D7210F6D77004D6EBB /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		A518B7DC210F744C004D6EBB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A5AF19022098F3B400EF17FB /* SCParser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCParser.h; sourceTree = "<group>"; };
 		A5AF19032098F3B400EF17FB /* SCParser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCParser.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -29,14 +25,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A518B7DB210F6DB3004D6EBB /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		A518B7C8210F6AD7004D6EBB /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				A518B7D8210F6D77004D6EBB /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -51,10 +39,19 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		A5A4B00B21FF9E33001A1CE4 /* Public */ = {
+			isa = PBXGroup;
+			children = (
+				A5AF19022098F3B400EF17FB /* SCParser.h */,
+				A5AF19032098F3B400EF17FB /* SCParser.m */,
+			);
+			path = Public;
+			sourceTree = "<group>";
+		};
 		A5AF18F62098F3B400EF17FB = {
 			isa = PBXGroup;
 			children = (
-				A5AF19012098F3B400EF17FB /* SCParser */,
+				A5AF19012098F3B400EF17FB /* Classes */,
 				A518B7D6210F6D77004D6EBB /* Frameworks */,
 				A5AF19002098F3B400EF17FB /* Products */,
 			);
@@ -64,19 +61,16 @@
 			isa = PBXGroup;
 			children = (
 				A518B7BF210F6AA0004D6EBB /* SCParser.framework */,
-				A518B7CB210F6AD7004D6EBB /* libSCParser.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		A5AF19012098F3B400EF17FB /* SCParser */ = {
+		A5AF19012098F3B400EF17FB /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				A5AF19022098F3B400EF17FB /* SCParser.h */,
-				A5AF19032098F3B400EF17FB /* SCParser.m */,
-				A518B7DC210F744C004D6EBB /* Info.plist */,
+				A5A4B00B21FF9E33001A1CE4 /* Public */,
 			);
-			path = SCParser;
+			path = Classes;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -110,22 +104,6 @@
 			productReference = A518B7BF210F6AA0004D6EBB /* SCParser.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		A518B7CA210F6AD7004D6EBB /* SCParser-Library */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = A518B7D1210F6AD7004D6EBB /* Build configuration list for PBXNativeTarget "SCParser-Library" */;
-			buildPhases = (
-				A518B7C7210F6AD7004D6EBB /* Sources */,
-				A518B7C8210F6AD7004D6EBB /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "SCParser-Library";
-			productName = "SCParser-Library";
-			productReference = A518B7CB210F6AD7004D6EBB /* libSCParser.a */;
-			productType = "com.apple.product-type.library.static";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -136,9 +114,6 @@
 				ORGANIZATIONNAME = "Даниил";
 				TargetAttributes = {
 					A518B7BE210F6AA0004D6EBB = {
-						CreatedOnToolsVersion = 10.0;
-					};
-					A518B7CA210F6AD7004D6EBB = {
 						CreatedOnToolsVersion = 10.0;
 					};
 				};
@@ -156,7 +131,6 @@
 			projectRoot = "";
 			targets = (
 				A518B7BE210F6AA0004D6EBB /* SCParser */,
-				A518B7CA210F6AD7004D6EBB /* SCParser-Library */,
 			);
 		};
 /* End PBXProject section */
@@ -167,14 +141,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A518B7D5210F6D5D004D6EBB /* SCParser.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		A518B7C7210F6AD7004D6EBB /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				A518B7DA210F6D9C004D6EBB /* SCParser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -189,12 +155,6 @@
 				INFOPLIST_FILE = "$(SRCROOT)/SCParser/Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = ru.danpashin.SCParser;
 				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
-		A518B7D2210F6AD7004D6EBB /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
 			};
 			name = Release;
 		};
@@ -232,7 +192,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Kirill Travin (27VA5352UX)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -258,7 +218,6 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = iphoneos;
-				VALID_ARCHS = "arm64 armv7";
 			};
 			name = Release;
 		};
@@ -269,14 +228,6 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A518B7C5210F6AA0004D6EBB /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		A518B7D1210F6AD7004D6EBB /* Build configuration list for PBXNativeTarget "SCParser-Library" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				A518B7D2210F6AD7004D6EBB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
